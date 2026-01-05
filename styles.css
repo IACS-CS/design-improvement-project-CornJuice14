@@ -9,6 +9,32 @@
   height: 720px;
 }
 
+/* Make the viewport a flex container so content is centered and clipped when needed */
+.design-viewport {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transform-origin: center center;
+}
+
+/* Ensure images keep their formatting (aspect ratio) and fit the box without being distorted */
+.design-viewport .design-image {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Prevent overflow when viewport size changes so the whole image is visible */
+.design-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* ✏️ EDIT: Add your CSS styling for the design here!
    IMPORTANT: Nest all your rules inside .my-design so they only affect YOUR design.
    Example:
@@ -26,9 +52,65 @@
 
 .my-design {
   /* ✏️ Delete this sample and add your design rules here */
+  transform-origin: center center; /* ensure transforms scale from center */
+  display: block;
+
   h1 {
-    color: green;
+    color: #c6093b;
     font-size: 88px;
-    font-family: "Comic Sans MS", cursive, sans-serif;
+    font-family: "Arial", cursive, sans-serif;
   }
+}
+
+/* Smooth transitions for scaling/resizing */
+.design-viewport,
+.my-design {
+  transition: transform 0.12s ease, width 0.12s ease, height 0.12s ease;
+}
+
+/* Code generated in response to prompt: "Add Soar.png to the improved design section" with GitHub Copilot using Raptor mini (Preview) */
+.my-design .design-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+.my-design .design-text {
+  flex: 1 1 auto;
+}
+.my-design .design-media {
+  flex: 0 0 auto;
+  width: 280px; /* suggested image width, adjust as needed */
+}
+.my-design .improved-image {
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* Responsive: stack content vertically on small screens */
+@media (max-width: 700px) {
+  .my-design .design-content {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .my-design .design-media {
+    width: 100%;
+  }
+}
+/* End generated code */
+
+a{
+  color: #c6093b;
+}
+
+.design-content{
+  background-color: #0033A0;
+}
+
+h2{
+  color: #ffffff;
 }
