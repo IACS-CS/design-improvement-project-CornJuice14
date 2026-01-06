@@ -37,31 +37,12 @@ class DesignScaler {
     this.designs.forEach((viewport) => {
       const designElement = viewport.querySelector(".design-image, .my-design");
       if (designElement) {
-        // For images, prefer the intrinsic (natural) size and attach the original
-        // dimensions to the viewport so we can scale the box instead of the image.
-        if (designElement.tagName === "IMG") {
-          const width =
-            designElement.naturalWidth ||
-            parseInt(getComputedStyle(viewport).width, 10) ||
-            960;
-          const height =
-            designElement.naturalHeight ||
-            parseInt(getComputedStyle(viewport).height, 10) ||
-            720;
+        // Store original dimensions from .design-size class
+        const width = parseInt(getComputedStyle(designElement).width, 10);
+        const height = parseInt(getComputedStyle(designElement).height, 10);
 
-          viewport.dataset.originalWidth = width;
-          viewport.dataset.originalHeight = height;
-
-          // Mark the image so it's not transformed directly
-          designElement.dataset.noTransform = "true";
-        } else {
-          // Store original dimensions from .design-size class for non-image designs
-          const width = parseInt(getComputedStyle(designElement).width, 10);
-          const height = parseInt(getComputedStyle(designElement).height, 10);
-
-          designElement.dataset.originalWidth = width;
-          designElement.dataset.originalHeight = height;
-        }
+        designElement.dataset.originalWidth = width;
+        designElement.dataset.originalHeight = height;
       }
     });
 
@@ -73,40 +54,12 @@ class DesignScaler {
       const designElement = viewport.querySelector(".design-image, .my-design");
       if (!designElement) return;
 
-      let elementToScale = designElement;
-      let originalWidth = null;
-      let originalHeight = null;
+      const originalWidth = parseInt(designElement.dataset.originalWidth, 10);
+      const originalHeight = parseInt(designElement.dataset.originalHeight, 10);
 
-      // If it's an image, we scale the viewport (box) instead of the image itself
-      if (designElement.tagName === "IMG") {
-        elementToScale = viewport;
-        originalWidth = parseInt(viewport.dataset.originalWidth, 10);
-        originalHeight = parseInt(viewport.dataset.originalHeight, 10);
-      } else {
-        originalWidth = parseInt(designElement.dataset.originalWidth, 10);
-        originalHeight = parseInt(designElement.dataset.originalHeight, 10);
-      }
-
-      if (!originalWidth || !originalHeight) {
-        // Fallback to computed size
-        originalWidth =
-          originalWidth ||
-          parseInt(getComputedStyle(elementToScale).width, 10) ||
-          960;
-        originalHeight =
-          originalHeight ||
-          parseInt(getComputedStyle(elementToScale).height, 10) ||
-          720;
-      }
-
-      // Get available space. Prefer the parent wrapper size so both original and improved designs
-      // can take advantage of the available container area when being scaled.
-      let availableWidth, availableHeight;
-      const wrapper = viewport.parentElement;
-      availableWidth =
-        (wrapper ? wrapper.clientWidth : viewport.clientWidth) - 32; // Account for padding
-      availableHeight =
-        (wrapper ? wrapper.clientHeight : viewport.clientHeight) - 32;
+      // Get available space
+      const availableWidth = viewport.clientWidth - 32; // Account for padding
+      const availableHeight = viewport.clientHeight - 32;
 
       // Calculate scale factor
       let scale = 1;
@@ -119,27 +72,11 @@ class DesignScaler {
         scale = Math.min(scale, availableHeight / originalHeight);
       }
 
-      // Apply scaling: for images, set the viewport dimensions so the image is never cropped;
-      // for improved designs (.my-design), use transforms but measure against the wrapper so the
-      // full design is visible and centered.
-      if (designElement.tagName === "IMG") {
-        const scaledW = Math.max(1, Math.round(originalWidth * scale));
-        const scaledH = Math.max(1, Math.round(originalHeight * scale));
-        viewport.style.width = scaledW + "px";
-        viewport.style.height = scaledH + "px";
-        viewport.style.transform = "none";
+      // Apply scale transform
+      if (scale < 1) {
+        designElement.style.transform = `scale(${scale.toFixed(3)})`;
       } else {
-        // Reset viewport dimensions in case it was previously resized for an image
-        viewport.style.width = "";
-        viewport.style.height = "";
-
-        // Apply transform scaling to the design element and center it
-        if (scale < 1) {
-          elementToScale.style.transform = `scale(${scale.toFixed(3)})`;
-        } else {
-          elementToScale.style.transform = "scale(1)";
-        }
-        elementToScale.style.transformOrigin = "center center";
+        designElement.style.transform = "scale(1)";
       }
     });
   }
