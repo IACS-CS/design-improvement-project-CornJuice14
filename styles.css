@@ -6,17 +6,14 @@
    I'm leaving the original declaration below so you can re-enable it if
    you want to force a fixed viewport for testing. */
 
+/* Code generated in response to prompt: "Set design-size to match MorningSlide.png (960x540) and ensure improved design uses these dimensions" with GitHub Copilot using Raptor mini (Preview) */
 .design-size {
-  /* ✏️ EDIT: Adjust width and height to match your design dimensions.
-     Examples:
-     - Standard Google Slide: 960px × 720px (4:3 aspect ratio)
-     - Widescreen Slide: 1280px × 720px (16:9 aspect ratio)
-     - Custom: Set to your design's actual dimensions
-  */
-  --width: 1280px !important;
-  --height: 720px !important;
+  width: 960px;
+  height: 540px;
   flex-shrink: 0;
+  overflow: hidden;
 }
+/* End generated code */
 
 /* Make the viewport a flex container so content is centered and clipped when needed */
 .design-viewport-stop {
@@ -44,6 +41,7 @@
   justify-content: center;
 }
 
+/* Code generated in response to prompt: "Fix .my-design internal size to match 960x540 so improved design matches original dimensions" with GitHub Copilot using Raptor mini (Preview) */
 .my-design-stop {
   /* ✏️ Delete this sample and add your design rules here */
   transform-origin: center center; /* ensure transforms scale from center */
@@ -51,45 +49,42 @@
   display: flex;
   align-items: stretch; /* fill height to match original */
   justify-content: center;
-  /* NOTE: width/height were commented out to avoid forcing a canonical
-     internal size (which the framework's JS normally handles)
-     Uncomment if you explicitly want to fix the internal design size. */
-  /* width: 960px;
-  height: 720px; */
+  /* Internal design size set to match the original design (960×540) */
+  width: 960px;
+  height: 540px;
   max-width: 100%;
 }
+/* End generated code */
 
-/* Code generated in response to prompt: "Add Soar.png to the improved design section" with GitHub Copilot using Raptor mini (Preview) */
-.my-design .design-content {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px; /* reduced spacing between image and text */
-  width: 100%;
-  height: 100%;
-}
-.my-design .design-text {
-  flex: 1 1 auto;
-}
-.my-design .design-media {
-  flex: 0 0 auto;
-  width: 360px; /* increased image width for better emphasis */
-}
-.my-design .improved-image {
-  max-width: 100%;
-  max-height: 100%;
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: contain;
-}
+  /* Code generated in response to prompt: "Add Soar.png to the improved design section" with GitHub Copilot using Raptor mini (Preview) */
+  .my-design .design-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+  }
+  .my-design .design-text {
+    flex: 1 1 auto;
+  }
+  .my-design .design-media {
+    flex: 0 0 auto;
+    width: 360px; /* increased image width for better emphasis */
+  }
+  .my-design .improved-image {
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
 
 /* Responsive: stack content vertically on small screens */
 @media (max-width: 700px) {
   .my-design-stop .design-content {
     flex-direction: column;
-    gap: 12px;
   }
   .my-design-stop .design-media {
     width: 100%;
@@ -104,11 +99,17 @@ a {
 .design-content {
   background-color: #002167;
   padding: 0; /* remove padding so content fills viewport like the original */
+  padding-left: 1rem;
+  margin: 0;
 }
 
+h1 {
+margin-top: auto;
+}
 h2 {
   color: #ffffff;
   font-family: Syne Mono;
+  font-size: 22px;
 }
 
 /* Add spacing between list items for readability */
@@ -124,16 +125,13 @@ ul li {
 /* Force the improved design viewport to standard slide size so it
    displays at the intended width/height and isn't scaled down. */
 .improvement-wrapper-stop {
-  /* Make sure the wrapper is tall enough to provide room for a 720px viewport
+  /* Make sure the wrapper is tall enough to provide room for a 540px viewport
      and span the full row so the design has enough horizontal space. */
-  /* min-height: 780px;  <-- commented out so framework can control layout */
+  /* min-height: 580px;  <-- commented out so framework can control layout */
   grid-column: 1 / -1;
 }
 
 .improvement-wrapper-stop .design-viewport {
-  /* Keep the viewport flexible while the internal .my-design defines the
-     canonical 960×720 size (this avoids the JS setting viewport dimensions).
-     The viewport centers the design and prevents overflow when narrow. */
   width: 100%;
   height: auto;
   max-width: 100%;
